@@ -2,11 +2,11 @@
 <%@page import="kr.or.iei.search.word.vo.Word"%>
 <%@page import="kr.or.iei.aside.model.vo.Product"%>
 <%@page import="java.util.ArrayList"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
-	ArrayList<Product> ProductList = (ArrayList<Product>)request.getAttribute("productList");
-	ArrayList<Word> wordList = (ArrayList<Word>)request.getAttribute("wordList");
 	ArrayList<NewsItem> newsList = (ArrayList<NewsItem>)request.getAttribute("newsList");
 %>
 <!DOCTYPE html>
@@ -15,71 +15,74 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-.newsTitle{
-    font-size: 14px;
-}
-.newsDescription{
-    font-size: 12px;
-}
-.newsContainer{
-    width: 500px;
-    height: 500px;
-    margin-bottom: 20px;
-    overflow: hidden;
-}
+.section{
+		margin-top: 20px;
+	}
+	.list-header{
+		text-align: right;
+		margin-bottom: 10px;
+	}
+	.list-header>a:hover{
+		text-decoration: underline;
+	}
 </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
     <div class="body-content">
     	<aside>관리자용 영역 + 화면 리모콘</aside>
-        <main>
-            <h1>HTML5 aside 태그 예시</h1>
-            <p>이 페이지는 <code>aside</code> 태그 사용법을 설명하는 예시입니다. <code>aside</code> 태그는 주 콘텐츠와 관련된 추가 정보를 제공할 때 유용합니다. dddddddddddddddddddddddddddddddd ddddddd</p>
-            <p>예를 들어, 본문 내용이 기사라면, <code>aside</code>에는 관련 기사나 참고 자료, 광고 등이 올 수 있습니다.</p><br><br>
+        <main class="content">
+        	<c:forEach var="notice" items="${noticeTypeList }">
+	
+			<section class="section type${notice.boardId }">
+				<div class="page-title" style="text-align:left;">${notice.boardName}
+					<div class="list-header">
+						<a href="/notice/list?reqPage=1&boardId=${notice.boardId }&boardName=${notice.boardName}">더보기</a>
+					</div>
+					<div class="list-content">
+						<table class="tbl hover">
+							<tr class="th">
+								<th style="width:10%">번호</th>
+								<th style="width:50%">제목</th>
+								<th style="width:20%">작성자</th>
+								<th style="width:20%">작성일</th>
+							</tr>
+							
+						</table>
+					</div>
+					</div>
+			</section>
+		</c:forEach>
+		<section class="section type${notice.noticeList }">
+				<div class="page-title" style="text-align:left;">${notice.boardName }
+					<div class="list-header">
+						<a href="/notice/list?reqPage=1&boardId=${notice.boardId }&boardName=${notice.boardName}">더보기</a>
+					</div>
+					<div class="list-content">
+						<table class="tbl hover">
+							<tr class="th">
+								<th style="width:10%">번호</th>
+								<th style="width:50%">제목</th>
+								<th style="width:20%">작성자</th>
+								<th style="width:20%">작성일</th>
+							</tr>
+							
+						</table>
+					</div>
+					</div>
+			</section>
             <div class="newsContainer">
-            뉴스 임시 배치<br>
 			<%for(int i=0; i<newsList.size(); i++) {%>
 				<div class="newsTitle"><a href="${newsList.get(i).getLink() }"><%=newsList.get(i).getTitle() %></a></div>
 				<div class="newsDescription"><%=newsList.get(i).getDescription() %></div>
 				<br>
 			<%} %>
-</div>
+			</div>
             <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         </main>
-        
-          <aside>
-          	<h2>인기검색어 현황</h2>
-          	<div class="one" style="fixed; width: 250px; height: 40px; overflow: hidden;">
-	        <div id="animated-box" style="width: 250px; height: 100px; margin-top: 0; position: relative; transition:0.5s ease; font-size:30px">
-	        <%for(int i=0; i<wordList.size(); i++) {%>
-				<%=wordList.get(i).getSrchRank() %>
-				<%=wordList.get(i).getSrchWord() %>
-				<br>
-			<%} %>
-	        </div>
-	    </div>
-          	
-          	
-          	
-          	
-            <h2>핫딜!!</h2>
-			<div class="aside-container">
-				<% for(int i = 0; i < ProductList.size(); i++) { %>
-				    <div><a href="<%= ProductList.get(i).getShopLink() %>"><%= ProductList.get(i).getShopTitle() %></a></div>
-				    <div class="aside-content">
-				        <img src="<%= ProductList.get(i).getShopImg() %>" class="aside-image-box">
-				        <div class="aside-tags">
-				            <div class="aside-tag"><%= ProductList.get(i).getShopLowPrice() %>원!!</div>
-				            <div class="aside-tag">판매처 : <%= ProductList.get(i).getShopName() %></div>
-				            <div class="aside-tag">제품 카테고리 : <%= ProductList.get(i).getShopCategory1() %></div>           
-				        </div>
-				    </div>
-				<% } %>
-			</div>
-            <a href="https://maplestory.nexon.com/Home/Main"><img src="resources/image/광고이미지예시.gif" class="god"></a>
-          </aside>
+	<jsp:include page="/WEB-INF/views/common/aside_right.jsp"/>
     </div>
+    <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
     <script>
     let marginTop = 0; // 초기 margin-top 값
     const maxMarginTop = -405; // 최대 margin-top 값
@@ -99,6 +102,41 @@
 	        animatedBox.style.marginTop = marginTop + 'px';
 	    }
 	}, 1000);
+	    
+	    function noticeList(){
+			$.ajax({
+				url: "/notice/index",
+				type:"GET",
+				dataType: "json",//서블릿에서 응답해주는 데이터의 형식
+				success:function(res){
+					console.log(res);
+					$(res).each(function(index,item){
+						let html='';
+						html+="<tr>";
+						html+="<td>"+item.boardId+"</td>";
+						html+="<td><a href='/notice/view?postId="+item.postId+"'>'"+item.boardTitle+"</a></td>";
+						html+="<td>"+item.boardWriter+"</td>";
+						html+="<td>"+item.createdDate+"</td>";
+						html+="</tr>";
+						
+						$('.section.type'+item.boardId).find('.tbl').append(html)
+					});
+				},
+				error:function(){
+					console.log("실패");
+				}
+			});
+			
+			}
+	
+	
+	setInterval(function(){
+		noticeList();
+		},1000*60*10);//10분에 1번씩
+	
+$(function(){
+	noticeList();
+	});
     </script>
 </body>
 </html>

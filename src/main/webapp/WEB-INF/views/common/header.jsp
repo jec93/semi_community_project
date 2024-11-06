@@ -17,8 +17,21 @@
                 <img src="resources/image/search_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg" alt="검색">
             </a>
         </div>
-        <div class="nav">
+        <nav class="nav">
             <ul>
+            <%-- Listener에서 조회한, 메뉴 종류 --%>
+				<c:forEach var="noticeType" items="${noticeTypeList}">
+					<li>
+						<a href="/notice/list?reqPage=1&boardId=${noticeType.boardId}&boardName=${noticeType.boardName}">${noticeType.boardName}</a>
+					</li>
+				</c:forEach>
+				<li>
+					<a href="#">API</a>
+					<ul class="sub-menu">
+						<li><a href="/api/naverMaps">지도</a></li>
+						<li><a href="/api/emailSendFrm">이메일</a></li>
+					</ul>
+				</li>
                 <li>
                     <a href="#">
                         <img src="resources/image/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg" alt="메뉴">
@@ -37,5 +50,5 @@
                     </div>
                 </li>
             </ul>
-        </div>
+        </nav>
     </header>
